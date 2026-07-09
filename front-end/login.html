@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - AutoLoc</title>
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/login.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+
+<header class="navbar">
+
+    <a href="index.html" class="logo">AutoLoc</a>
+<nav id="nav-menu">
+
+    <a href="index.html">Accueil</a>
+    <a href="index.html#cars">Voitures</a>
+    <a href="index.html#offers">Offres</a>
+    <a href="index.html#contact">Contact</a>
+
+</nav>
+
+    <div class="nav-actions">
+
+<label class="theme-toggle">
+
+    <input type="checkbox" id="dark-toggle">
+
+    <span class="toggle-track">
+
+        <span class="toggle-icon moon">
+            <i class="fas fa-moon"></i>
+        </span>
+
+        <span class="toggle-icon sun">
+            <i class="fas fa-sun"></i>
+        </span>
+
+    </span>
+
+</label>
+        <a href="login.html">
+            <button class="nav-btn">
+                Se connecter.
+            </button>
+        </a>
+    </div>
+
+    <div class="burger" id="burger">
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </div>
+
+
+
+</header>
+
+<section class="login-page">
+
+    <div class="login-container">
+
+        <div class="login-left">
+            <h1>Bienvenue sur AutoLoc</h1>
+
+            <p>
+                Connectez-vous pour réserver vos véhicules premium
+                et gérer vos réservations facilement.
+            </p>
+
+            <div class="login-features">
+
+                <div class="login-feature">
+                    <i class="fas fa-car"></i>
+                    <span>Voitures premium</span>
+                </div>
+
+                <div class="login-feature">
+                    <i class="fas fa-bolt"></i>
+                    <span>Réservation rapide</span>
+                </div>
+
+                <div class="login-feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Paiement sécurisé</span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="login-right">
+
+            <h2>Connexion</h2>
+
+            <form class="login-form" id="login-form">
+
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="email" placeholder="Votre email" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Mot de passe</label>
+                    <input type="password" id="password" placeholder="Votre mot de passe" required>
+                </div>
+
+                <button type="submit">
+                    Se connecter
+                </button>
+
+            </form>
+
+            <div class="login-footer">
+                <a href="register.html">
+Créer un compte
+</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+    <p>© 2026 AutoLoc - Tous droits réservés</p>
+</footer>
+
+<script>
+console.log("JS LOGIN CHARGÉ");
+
+document.getElementById("login-form").addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    console.log("SUBMIT OK");
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    try {
+
+        console.log("AVANT FETCH");
+
+        const response = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email,
+                password
+            })
+        });
+
+        console.log("STATUS:", response.status);
+
+        const data = await response.json();
+
+        console.log("LOGIN RESPONSE:", data);
+
+        if (!response.ok) {
+            alert(data.message || "Erreur login");
+            return;
+        }
+
+        if (!data.token || !data.user) {
+            alert("Réponse serveur invalide");
+            return;
+        }
+
+        // 🔥 STOCKAGE
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.user.role);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("userId", data.user.id);
+
+        console.log("ROLE STORED:", localStorage.getItem("role"));
+
+        // 🔥 REDIRECTION
+        if (data.user.role === "admin") {
+            window.location.href = "admin.html";
+        } else {
+            window.location.href = "dashboard.html";
+        }
+
+    } catch (err) {
+        console.error("LOGIN ERROR:", err);
+        alert("Erreur serveur");
+    }
+
+});
+
+</script>
+
+
+</body>
+</html>

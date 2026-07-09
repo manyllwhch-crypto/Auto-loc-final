@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Location de Voitures</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+<header class="navbar home-navbar">
+    <a href="index.html" class="logo">AutoLoc</a>
+
+<nav id="nav-menu">
+
+    <a href="index.html">Accueil</a>
+    <a href="index.html#cars">Voitures</a>
+
+    <a href="dashboard.html" id="dashboard-link">
+        Mes réservations
+    </a>
+
+    <a href="index.html#contact">Contact</a>
+
+</nav>
+<div class="burger" id="burger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+<div class="nav-actions">
+
+    <label class="theme-toggle">
+        <input type="checkbox" id="dark-toggle">
+
+        <span class="toggle-track">
+            <span class="toggle-icon moon">
+                <i class="fas fa-moon"></i>
+            </span>
+
+            <span class="toggle-icon sun">
+                <i class="fas fa-sun"></i>
+            </span>
+        </span>
+    </label>
+
+    <a href="cart.html" id="cart-link" class="cart-btn">
+        <i class="fas fa-shopping-cart"></i>
+    </a>
+
+    <button class="nav-btn" id="admin-btn">
+        Panel admin
+    </button>
+
+    <button class="nav-btn" id="auth-btn">
+        Se connecter
+    </button>
+
+</div>
+</header>
+
+
+<section class="hero fade-in">
+    <div class="hero-text">
+        <h1>Louez la voiture parfaite</h1>
+        <p>Simple, rapide et au meilleur prix</p>
+        <button onclick="window.location.href='index.html#cars'">
+    Voir les véhicules
+</button>
+    </div>
+</section>
+
+<section class="cars fade-in" id="cars">
+    <h2>Nos véhicules populaires</h2>
+
+    <div class="car-grid">
+
+        <div class="car-card">
+            <img src="../src/img/BMWS3.jpg" alt="BMW">
+            <h3>BMW Série 3</h3>
+            <p>À partir de X€/jour</p>
+            <a href="reservation.html">
+<button onclick="selectCar(1)">
+Réserver
+</button>
+</a>
+        </div>
+
+        <div class="car-card">
+            <img src="../src/img/audiA4.jpg" alt="Audi">
+            <h3>Audi A4</h3>
+            <p>À partir de X€/jour</p>
+            <a href="reservation.html">
+<button onclick="selectCar(2)">
+Réserver
+</button>
+</a>
+        </div>
+
+        <div class="car-card">
+            <img src="../src/img/mercoCC.jpg" alt="Mercedes">
+            <h3>Mercedes Classe C</h3>
+            <p>À partir de X€/jour</p>
+            <a href="reservation.html">
+<button onclick="selectCar(3)">
+Réserver
+</button>
+</a>
+        </div>
+
+        <div class="car-card">
+            <img src="../src/img/TModel3.jpg" alt="Tesla">
+            <h3>Tesla Model 3</h3>
+            <p>À partir de X€/jour</p>
+            <a href="reservation.html">
+<button onclick="selectCar(4)">
+Réserver
+</button>
+</a>
+        </div>
+
+    </div>
+</section>
+
+<section class="contact fade-in" id="contact">
+    <h2>Contactez-nous</h2>
+
+<div class="contact-info">
+
+    <div class="contact-item">
+        <i class="fas fa-envelope"></i>
+<p><a href="mailto:contact@autoloc.com">contact@autoloc.com</a></p>
+
+    </div>
+
+    <div class="contact-item">
+        <i class="fas fa-phone"></i>
+<p><a href="tel:+33612345678">+33 6 12 34 56 78</a></p>
+    </div>
+
+    <div class="contact-item">
+        <i class="fas fa-map-marker-alt"></i>
+        <p>12 rue de Paris, 75000 Paris</p>
+    </div>
+</div>
+</section>
+<footer>
+    <p>© 2026 AutoLoc - Tous droits réservés</p>
+</footer>
+<script>
+// ===== ELEMENTS =====
+const burger = document.getElementById("burger");
+const nav = document.getElementById("nav-menu");
+const faders = document.querySelectorAll(".fade-in");
+const cards = document.querySelectorAll(".car-card");
+const darkToggle = document.getElementById("dark-toggle");
+const icon = darkToggle.querySelector("i");
+
+
+// ===== ANIMATION SCROLL =====
+const appearOnScroll = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+        }
+    });
+}, {
+    threshold: 0.2
+});
+
+// observer sections + cards
+faders.forEach(el => appearOnScroll.observe(el));
+cards.forEach(card => appearOnScroll.observe(card));
+
+
+// ===== MENU BURGER =====
+burger.addEventListener("click", () => {
+    nav.classList.toggle("active");
+    burger.classList.toggle("active");
+});
+
+// fermer menu au clic
+document.querySelectorAll("#nav-menu a").forEach(link => {
+    link.addEventListener("click", () => {
+        nav.classList.remove("active");
+        burger.classList.remove("active");
+    });
+});
+
+
+// ===== DARK MODE =====
+
+if (localStorage.getItem("dark-mode") === "enabled") {
+    document.body.classList.add("dark-mode");
+    darkToggle.checked = true;
+}
+
+// toggle dark mode
+darkToggle.addEventListener("change", () => {
+    if (darkToggle.checked) {
+        document.body.classList.add("dark-mode");
+        localStorage.setItem("dark-mode", "enabled");
+    } else {
+        document.body.classList.remove("dark-mode");
+        localStorage.setItem("dark-mode", "disabled");
+    }
+});
+
+window.addEventListener("scroll", () => {
+    const navbar = document.querySelector(".navbar");
+    const scrollY = window.scrollY;
+
+    if (scrollY > 780) {
+        navbar.classList.add("scrolled");
+    } else {
+        navbar.classList.remove("scrolled");
+    }
+});
+function selectCar(id){
+
+localStorage.setItem(
+"selectedCar",
+id
+);
+
+window.location.href =
+"reservation.html";
+
+}
+const authBtn = document.getElementById("auth-btn");
+const adminBtn = document.getElementById("admin-btn");
+const cartLink = document.getElementById("cart-link");
+const dashboardLink = document.getElementById("dashboard-link");
+
+const token = localStorage.getItem("token");
+const role = localStorage.getItem("role");
+
+adminBtn.style.display = "none";
+cartLink.style.display = "none";
+dashboardLink.style.display = "none";
+
+if (token) {
+dashboardLink.style.display = "inline";
+authBtn.textContent = "Se déconnecter";
+authBtn.classList.remove("login");
+authBtn.classList.add("logout");
+
+    if (role === "admin") {
+        adminBtn.style.display = "inline-flex";
+
+        adminBtn.addEventListener("click", () => {
+            window.location.href = "admin.html";
+        });
+
+    } else {
+        cartLink.style.display = "inline-flex";
+    }
+
+    authBtn.addEventListener("click", () => {
+        localStorage.clear();
+        window.location.reload();
+    });
+
+} else {
+
+    authBtn.textContent = "Se connecter";
+authBtn.classList.remove("logout");
+authBtn.classList.add("login");
+
+    authBtn.addEventListener("click", () => {
+        window.location.href = "login.html";
+    });
+
+}
+</script>
+
+</body>
+</html>

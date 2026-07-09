@@ -1,0 +1,260 @@
+/* =====================================================
+   PAGE RESERVATION
+===================================================== */
+
+.reservation-page {
+    min-height: 100vh;
+
+    padding: 140px 40px 80px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* CONTAINER */
+
+.reservation-container {
+    width: 100%;
+    max-width: 1200px;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 40px;
+}
+
+/* CARDS */
+
+.reservation-left,
+.reservation-right {
+    background: white;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* IMAGE */
+
+.reservation-left img {
+    width: 100%;
+    height: 320px;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+/* DETAILS */
+
+.car-details {
+    padding: 30px;
+}
+
+.car-details h1 {
+    font-size: 38px;
+    margin-bottom: 15px;
+}
+
+.car-details p {
+    color: #666;
+    line-height: 1.7;
+
+    margin-bottom: 25px;
+}
+
+.price {
+    font-size: 34px;
+    font-weight: 700;
+
+    color: #1a73e8;
+
+    margin-bottom: 25px;
+}
+
+/* FEATURES */
+
+.features {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 15px;
+}
+
+.feature {
+    background: #f5f7fa;
+
+    padding: 12px 18px;
+
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.feature i {
+    color: #1a73e8;
+}
+
+/* RIGHT */
+
+.reservation-right {
+    padding: 35px;
+}
+
+.reservation-right h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+/* FORM */
+
+.reservation-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.input-group input,
+.input-group select {
+    padding: 14px;
+
+    border-radius: 10px;
+    border: 1px solid #ddd;
+
+    font-size: 15px;
+    font-family: inherit;
+
+    transition: 0.3s ease;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    outline: none;
+    border-color: #1a73e8;
+}
+
+/* BUTTON */
+
+.reservation-form button {
+    margin-top: 10px;
+
+    padding: 15px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #1a73e8;
+    color: white;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+}
+
+.reservation-form button:hover {
+    background: #1558b0;
+    transform: translateY(-2px);
+}
+
+/* =====================================================
+   DARK MODE
+===================================================== */
+
+body.dark-mode .reservation-left,
+body.dark-mode .reservation-right {
+    background: #111;
+}
+
+body.dark-mode .feature {
+    background: #1b1b1b;
+}
+
+body.dark-mode .car-details p {
+    color: #b3b3b3;
+}
+
+body.dark-mode .input-group label {
+    color: white;
+}
+
+body.dark-mode .input-group input,
+body.dark-mode .input-group select {
+    background: #1b1b1b;
+
+    border: 1px solid #333;
+
+    color: white;
+}
+
+body.dark-mode .reservation-form button {
+    background: white;
+    color: black;
+}
+
+body.dark-mode .reservation-form button:hover {
+    background: #e5e5e5;
+}
+
+.car-slider {
+    overflow: hidden;
+}
+
+.car-slider img {
+    width: 100%;
+    height: 320px;
+
+    object-fit: cover;
+
+    transition: opacity 0.5s ease;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 900px) {
+
+    .reservation-container {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .reservation-page {
+        padding: 120px 20px 60px;
+    }
+
+    .reservation-right {
+        padding: 25px;
+    }
+
+    .car-details h1 {
+        font-size: 30px;
+    }
+
+    .features {
+        flex-direction: column;
+    }
+
+}

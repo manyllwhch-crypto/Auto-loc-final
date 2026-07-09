@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Panier - AutoLoc</title>
+
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/reservation.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+<header class="navbar scrolled">
+    <a href="index.html" class="logo">AutoLoc</a>
+
+<nav id="nav-menu">
+    <a href="index.html">Accueil</a>
+    <a href="index.html#cars">Voitures</a>
+    <a href="index.html#contact">Contact</a>
+    <a href="dashboard.html">Mes réservations</a>
+</nav>
+
+    <div class="nav-actions">
+        <button id="logout" class="nav-btn">Déconnexion</button>
+    </div>
+</header>
+
+<section class="reservation-page fade-in visible">
+
+    <div class="reservation-container">
+
+        <div class="reservation-left">
+
+            <div class="car-details">
+
+                <h1>Votre panier</h1>
+
+                <div id="cart-summary"></div>
+
+            </div>
+
+        </div>
+
+        <div class="reservation-right">
+
+            <h2>Paiement</h2>
+
+            <form class="reservation-form" id="payment-form">
+
+                <div class="input-group">
+                    <label>Nom sur la carte</label>
+                    <input type="text" id="card-name" placeholder="Jean Dupont" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Numéro de carte</label>
+                    <input type="text" id="card-number" placeholder="4242 4242 4242 4242" maxlength="19" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Date d'expiration</label>
+                    <input type="text" id="card-expiry" placeholder="MM/AA" maxlength="5" required>
+                </div>
+
+                <div class="input-group">
+                    <label>CVV</label>
+                    <input type="password" id="card-cvv" placeholder="123" maxlength="3" required>
+                </div>
+
+                <button type="submit">
+                    Payer et confirmer la réservation
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+const token = localStorage.getItem("token");
+
+if (!token) {
+    window.location.href = "login.html";
+}
+
+const cartSummary = document.getElementById("cart-summary");
+const paymentForm = document.getElementById("payment-form");
+
+const cart = JSON.parse(localStorage.getItem("cart"));
+
+if (!cart) {
+    cartSummary.innerHTML = `
+        <p>Votre panier est vide.</p>
+        <br>
+        <a href="index.html#cars">
+            <button class="nav-btn">Voir les véhicules</button>
+        </a>
+    `;
+
+    paymentForm.style.display = "none";
+} else {
+    cartSummary.innerHTML = `
+        <h2>${cart.car_name || "Véhicule sélectionné"}</h2>
+
+        <p><b>Date de départ :</b> ${cart.start_date}</p>
+        <p><b>Date de retour :</b> ${cart.end_date}</p>
+        <p><b>Lieu de prise en charge :</b> ${cart.pickup_location || "Non renseigné"}</p>
+
+        <div class="price">
+            Total : ${cart.total_price || 0}€
+        </div>
+
+        <button class="nav-btn" onclick="clearCart()">
+            Vider le panier
+        </button>
+    `;
+}
+
+paymentForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    if (!cart) {
+        alert("Votre panier est vide.");
+        return;
+    }
+
+    const cardName = document.getElementById("card-name").value.trim();
+    const cardNumber = document.getElementById("card-number").value.trim();
+    const cardExpiry = document.getElementById("card-expiry").value.trim();
+    const cardCvv = document.getElementById("card-cvv").value.trim();
+
+    if (!cardName || !cardNumber || !cardExpiry || !cardCvv) {
+        alert("Veuillez remplir toutes les informations de paiement.");
+        return;
+    }
+
+    try {
+        const response = await fetch("/api/reservations", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token
+            },
+            body: JSON.stringify({
+                car_id: cart.car_id,
+                start_date: cart.start_date,
+                end_date: cart.end_date,
+                pickup_location: cart.pickup_location
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.message || "Erreur lors de la réservation.");
+            return;
+        }
+
+        localStorage.removeItem("cart");
+
+        alert("Paiement validé. Votre réservation est confirmée.");
+
+        window.location.href = "dashboard.html";
+
+    } catch (err) {
+        console.error(err);
+        alert("Erreur serveur.");
+    }
+});
+
+function clearCart() {
+    localStorage.removeItem("cart");
+    window.location.href = "cart.html";
+}
+
+document.getElementById("logout").addEventListener("click", () => {
+    localStorage.clear();
+    window.location.href = "index.html";
+});
+</script>
+
+</body>
+</html>

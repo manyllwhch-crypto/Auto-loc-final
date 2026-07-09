@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard</title>
+
+<link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+<header class="navbar">
+<a href="index.html" class="logo">AutoLoc</a>
+
+<div class="nav-actions">
+<button id="logout" class="nav-btn">Déconnexion</button>
+</div>
+</header>
+
+
+<section style="max-width:1200px;margin:auto;padding:120px 20px;">
+
+<h1>Mes réservations</h1>
+
+<div id="reservations"></div>
+
+</section>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const token = localStorage.getItem("token");
+    console.log("TOKEN :", token);
+
+    if (!token) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    const container = document.getElementById("reservations");
+    console.log("CONTAINER :", container);
+
+    if (!container) {
+        console.error("❌ #reservations introuvable");
+        return;
+    }
+
+    async function loadReservations() {
+
+        console.log("▶ loadReservations exécuté");
+
+        try {
+const role = localStorage.getItem("role");
+
+const url =
+    role === "admin"
+        ? "/api/reservations/admin"
+        : "/api/reservations/my";
+
+const response = await fetch(url, {
+    method: "GET",
+    headers: {
+        Authorization: "Bearer " + token
+    }
+});
+
+            console.log("▶ API status =", response.status);
+
+            const reservations = await response.json();
+
+            console.log("▶ DATA reçue =", reservations);
+
+            container.innerHTML = "";
+
+            if (!Array.isArray(reservations) || reservations.length === 0) {
+                container.innerHTML = "<p>Aucune réservation trouvée.</p>";
+                return;
+            }
+
+reservations.forEach(r => {
+    console.log("ITEM :", r);
+
+    const car = r.car || r;
+
+    container.innerHTML += `
+        <div style="
+            margin-top:20px;
+            padding:15px;
+            border:1px solid #ddd;
+            border-radius:8px;
+            background:#fff;
+        ">
+
+            <h2>${car.brand || r.brand || "Voiture"} ${car.model || r.model || ""}</h2>
+
+            <p><b>Départ :</b> ${r.start_date || "N/A"}</p>
+            <p><b>Retour :</b> ${r.end_date || "N/A"}</p>
+            <p><b>Prix :</b> ${r.total_price ?? 0}€</p>
+            <p><b>Statut :</b> ${r.status || "pending"}</p>
+
+            ${role === "admin"
+                ? `<button
+                    onclick="deleteReservation(${r.id})"
+                    style="
+                        margin-top:10px;
+                        background:red;
+                        color:white;
+                        padding:8px 12px;
+                        border:none;
+                        cursor:pointer;
+                        border-radius:5px;
+                    ">
+                    Supprimer
+                    </button>`
+                : ""
+            }
+
+        </div>
+    `;
+});
+
+        } catch (err) {
+            console.error("❌ ERROR LOAD RESERVATIONS :", err);
+        }
+    }
+
+    loadReservations();
+
+    const logoutBtn = document.getElementById("logout");
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            localStorage.clear();
+            window.location.href = "index.html";
+        });
+    }
+
+});
+
+async function deleteReservation(id) {
+
+    if (!confirm("Supprimer cette réservation ?")) return;
+
+    await fetch(
+        "/api/reservations/admin/" + id,
+        {
+            method: "DELETE",
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        }
+    );
+
+    loadReservations();
+}
+
+</script>
+</body>
+</html>

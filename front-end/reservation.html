@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réservation - AutoLoc</title>
+
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/reservation.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+
+<header class="navbar">
+
+    <a href="index.html" class="logo">AutoLoc</a>
+
+<nav id="nav-menu">
+
+    <a href="index.html">Accueil</a>
+    <a href="index.html#cars">Voitures</a>
+    <a href="index.html#offers">Offres</a>
+    <a href="index.html#contact">Contact</a>
+
+</nav>
+
+    <div class="nav-actions">
+
+        <a href="login.html">
+            <button class="nav-btn">
+                Se connecter
+            </button>
+        </a>
+
+<label class="theme-toggle">
+
+    <input type="checkbox" id="dark-toggle">
+
+    <span class="toggle-track">
+
+        <span class="toggle-icon moon">
+            <i class="fas fa-moon"></i>
+        </span>
+
+        <span class="toggle-icon sun">
+            <i class="fas fa-sun"></i>
+        </span>
+
+    </span>
+
+</label>
+
+    </div>
+
+    <div class="burger" id="burger">
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </div>
+
+
+
+</header>
+
+<section class="reservation-page fade-in visible">
+
+    <div class="reservation-container">
+
+<div class="reservation-left">
+
+    <div class="car-slider">
+
+        <img id="car-image" src="../src/img/BMWS3.jpg" alt="BMW">
+
+    </div>
+
+    <div class="car-details">
+
+        <h1 id="car-name">BMW Série 3</h1>
+
+        <p id="car-description">
+            Berline premium idéale pour les déplacements professionnels.
+        </p>
+
+        <div class="price" id="car-price">
+            89€/jour
+        </div>
+
+        <div class="features">
+
+            <div class="feature">
+                <i class="fas fa-users"></i>
+                <span id="car-seats">5 places</span>
+            </div>
+
+            <div class="feature">
+                <i class="fas fa-gas-pump"></i>
+                <span id="car-fuel">Diesel</span>
+            </div>
+
+            <div class="feature">
+                <i class="fas fa-cogs"></i>
+                <span id="car-gearbox">Automatique</span>
+            </div>
+
+        </div>
+
+    </div>
+
+<script>
+const token = localStorage.getItem("token");
+
+if (!token) {
+    window.location.href = "login.html";
+}
+const cars = [
+
+    {
+        image: "../src/img/BMWS3.jpg",
+        name: "BMW Série 3",
+        description: "Berline premium idéale pour les déplacements professionnels.",
+        price: "89€/jour",
+        seats: "5 places",
+        fuel: "Diesel",
+        gearbox: "Automatique"
+    },
+
+    {
+        image: "../src/img/AudiA4.jpg",
+        name: "Audi A4",
+        description: "Confort haut de gamme et conduite dynamique.",
+        price: "95€/jour",
+        seats: "5 places",
+        fuel: "Essence",
+        gearbox: "Automatique"
+    },
+
+    {
+        image: "../src/img/mercoCC.jpg",
+        name: "Mercedes Classe C",
+        description: "Élégance et technologie premium.",
+        price: "105€/jour",
+        seats: "5 places",
+        fuel: "Hybride",
+        gearbox: "Automatique"
+    },
+
+    {
+        image: "../src/img/TModel3.jpg",
+        name: "Tesla Model 3",
+        description: "Expérience 100% électrique et futuriste.",
+        price: "120€/jour",
+        seats: "5 places",
+        fuel: "Électrique",
+        gearbox: "Automatique"
+    }
+
+];
+
+let currentCar = 0;
+
+const carImage = document.getElementById("car-image");
+const carName = document.getElementById("car-name");
+const carDescription = document.getElementById("car-description");
+const carPrice = document.getElementById("car-price");
+const carSeats = document.getElementById("car-seats");
+const carFuel = document.getElementById("car-fuel");
+const carGearbox = document.getElementById("car-gearbox");
+
+function updateCar() {
+
+    currentCar++;
+
+    if (currentCar >= cars.length) {
+        currentCar = 0;
+    }
+
+    const car = cars[currentCar];
+
+    carImage.style.opacity = 0;
+
+    setTimeout(() => {
+
+        carImage.src = car.image;
+
+        carName.textContent = car.name;
+        carDescription.textContent = car.description;
+        carPrice.textContent = car.price;
+
+        carSeats.textContent = car.seats;
+        carFuel.textContent = car.fuel;
+        carGearbox.textContent = car.gearbox;
+
+        carImage.style.opacity = 1;
+
+    }, 300);
+
+}
+
+setInterval(updateCar, 4000);
+
+</script>
+
+</div>
+
+        <div class="reservation-right">
+
+            <h2>Réserver maintenant</h2>
+<form class="reservation-form" id="reservation-form">
+
+    <div class="input-group">
+        <label>Date de départ</label>
+        <input type="date" id="start_date" required>
+    </div>
+
+    <div class="input-group">
+        <label>Date de retour</label>
+        <input type="date" id="end_date" required>
+    </div>
+
+    <div class="input-group">
+        <label>Lieu de récupération</label>
+
+        <select id="pickup_location" required>
+            <option value="Paris">Paris</option>
+            <option value="Lyon">Lyon</option>
+            <option value="Marseille">Marseille</option>
+        </select>
+    </div>
+
+<button type="submit">
+    Ajouter au panier
+</button>
+
+</form>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+    <p>© 2026 AutoLoc - Tous droits réservés</p>
+</footer>
+
+<script>
+
+
+
+// ===== MENU BURGER =====
+const burger = document.getElementById("burger");
+const nav = document.getElementById("nav-menu");
+
+burger.addEventListener("click", () => {
+    nav.classList.toggle("active");
+    burger.classList.toggle("active");
+});
+
+// ===== DARK MODE =====
+const darkToggle = document.getElementById("dark-toggle");
+
+if (localStorage.getItem("dark-mode") === "enabled") {
+    document.body.classList.add("dark-mode");
+    darkToggle.checked = true;
+}
+
+darkToggle.addEventListener("change", () => {
+
+    if (darkToggle.checked) {
+        document.body.classList.add("dark-mode");
+        localStorage.setItem("dark-mode", "enabled");
+    } else {
+        document.body.classList.remove("dark-mode");
+        localStorage.setItem("dark-mode", "disabled");
+    }
+
+});
+
+// ===== NAVBAR SCROLL =====
+window.addEventListener("scroll", () => {
+    const navbar = document.querySelector(".navbar");
+
+    if (window.scrollY > 50) {
+        navbar.classList.add("scrolled");
+    } else {
+        navbar.classList.remove("scrolled");
+    }
+});
+
+
+if(!token){
+
+window.location.href =
+"login.html";
+
+}
+
+loadCar();
+
+async function loadCar(){
+
+const response =
+await fetch(
+"/api/cars"
+);
+
+const cars =
+await response.json();
+
+const carId =
+parseInt(
+localStorage.getItem(
+"selectedCar"
+)
+);
+
+const car =
+cars.find(
+c => Number(c.id) === Number(carId)
+);
+
+if(!car) return;
+
+document.getElementById(
+"car-name"
+).textContent =
+car.brand + " " +
+car.model;
+
+document.getElementById(
+"car-description"
+).textContent =
+car.description;
+
+document.getElementById(
+"car-price"
+).textContent =
+car.price_per_day + "€/jour";
+
+}
+
+document
+.getElementById("reservation-form")
+.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const car_id = localStorage.getItem("selectedCar");
+
+    const start_date = document.getElementById("start_date").value;
+    const end_date = document.getElementById("end_date").value;
+    const pickup_location = document.getElementById("pickup_location").value;
+
+    if (!car_id) {
+        alert("Aucune voiture sélectionnée.");
+        return;
+    }
+
+    if (!start_date || !end_date) {
+        alert("Veuillez choisir les dates.");
+        return;
+    }
+
+    if (new Date(end_date) <= new Date(start_date)) {
+        alert("La date de retour doit être après la date de départ.");
+        return;
+    }
+
+    const response = await fetch("/api/cars");
+    const cars = await response.json();
+
+    const car = cars.find(c => Number(c.id) === Number(car_id));
+
+    if (!car) {
+        alert("Voiture introuvable.");
+        return;
+    }
+
+    const days = Math.ceil(
+        (new Date(end_date) - new Date(start_date)) / 86400000
+    );
+
+    const total_price = days * car.price_per_day;
+
+    localStorage.setItem("cart", JSON.stringify({
+        car_id,
+        car_name: car.brand + " " + car.model,
+        start_date,
+        end_date,
+        pickup_location,
+        total_price
+    }));
+
+    alert("Voiture ajoutée au panier.");
+
+    window.location.href = "cart.html";
+});
+
+</script>
+
+</script>
+
+</body>
+</html>

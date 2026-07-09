@@ -1,0 +1,303 @@
+
+.login-page {
+    min-height: 100vh;
+
+    padding: 140px 40px 80px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 1100px;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    overflow: hidden;
+
+    border-radius: 24px;
+
+    background: white;
+
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+}
+
+/* LEFT */
+
+.login-left {
+    background:
+    linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+    url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1400&auto=format&fit=crop') center/cover;
+
+    color: white;
+
+    padding: 60px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-left h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.login-left p {
+    font-size: 18px;
+    line-height: 1.8;
+
+    color: #e5e5e5;
+
+    margin-bottom: 40px;
+}
+
+.login-features {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-feature {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.login-feature i {
+    color: #3b82f6;
+    font-size: 20px;
+}
+
+/* RIGHT */
+
+.login-right {
+    padding: 60px;
+
+    width: 100%;
+    background: white;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-right h2 {
+    font-size: 38px;
+    margin-bottom: 35px;
+}
+
+/* FORM */
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 22px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.input-group input {
+    width: 100%;
+
+    background: #f5f7fa;
+    color: #111;
+
+    -webkit-appearance: none;
+    appearance: none;
+    padding: 15px;
+
+    border-radius: 12px;
+    border: 1px solid #ddd;
+
+    font-size: 15px;
+    font-family: inherit;
+
+    transition: 0.3s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #1a73e8;
+    background: white;
+}
+
+.input-group input::placeholder {
+    color: #777;
+}
+
+/* FIX AUTOFILL CHROME */
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #111;
+    -webkit-box-shadow: 0 0 0px 1000px #f5f7fa inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.login-form button {
+    width: 100%;
+    margin-top: 10px;
+
+    padding: 15px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: #1a73e8;
+    color: white;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s ease;
+}
+
+.login-form button:hover {
+    background: #1558b0;
+    transform: translateY(-2px);
+}
+
+.login-footer {
+    margin-top: 25px;
+}
+
+.login-footer p {
+    color: #666;
+}
+
+.login-footer a {
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* =====================================================
+   DARK MODE
+===================================================== */
+
+body.dark-mode .login-container {
+    background: #111;
+}
+
+body.dark-mode .login-right {
+    background: #111;
+}
+
+/* IMPORTANT FIX */
+
+.login-right * {
+    position: relative;
+    z-index: 2;
+}
+
+.login-form {
+    width: 100%;
+}
+
+.login-form input {
+    box-sizing: border-box;
+}
+
+.login-container {
+    align-items: stretch;
+}
+
+.login-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+body.dark-mode .login-right h2 {
+    color: white;
+}
+
+body.dark-mode .input-group label {
+    color: white;
+}
+
+body.dark-mode .input-group input {
+    background: #1b1b1b;
+    border: 1px solid #333;
+    color: white;
+}
+
+body.dark-mode .input-group input::placeholder {
+    color: #999;
+}
+
+body.dark-mode input:-webkit-autofill,
+body.dark-mode input:-webkit-autofill:hover,
+body.dark-mode input:-webkit-autofill:focus {
+    -webkit-text-fill-color: white;
+    -webkit-box-shadow: 0 0 0px 1000px #1b1b1b inset;
+}
+
+body.dark-mode .login-footer p {
+    color: #b3b3b3;
+}
+
+body.dark-mode .login-form button {
+    background: white;
+    color: black;
+}
+
+body.dark-mode .login-form button:hover {
+    background: #e5e5e5;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 900px) {
+
+    .login-container {
+        grid-template-columns: 1fr;
+    }
+
+    .login-left {
+        min-height: 350px;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .login-page {
+        padding: 120px 20px 60px;
+    }
+
+    .login-left,
+    .login-right {
+        padding: 40px 25px;
+    }
+
+    .login-left h1 {
+        font-size: 34px;
+    }
+
+    .login-right h2 {
+        font-size: 30px;
+    }
+
+}
