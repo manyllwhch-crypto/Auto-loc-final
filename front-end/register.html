@@ -2,114 +2,147 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Inscription AutoLoc</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscription - AutoLoc</title>
 
 <link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet" href="css/login.css">
-
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
+
+<header class="navbar scrolled">
+    <a href="index.html" class="logo">AutoLoc</a>
+
+    <nav id="nav-menu">
+        <a href="index.html">Accueil</a>
+        <a href="index.html#cars">Voitures</a>
+        <a href="index.html#contact">Contact</a>
+    </nav>
+
+    <div class="nav-actions">
+        <a href="login.html">
+            <button class="nav-btn login">Se connecter</button>
+        </a>
+    </div>
+</header>
 
 <section class="login-page">
 
-<div class="login-container">
+    <div class="login-container">
 
-<div class="login-right">
+        <div class="login-left">
+            <h1>Rejoignez AutoLoc</h1>
 
-<h2>Créer un compte</h2>
+            <p>
+                Créez votre compte pour réserver un véhicule,
+                suivre vos réservations et accéder à votre espace personnel.
+            </p>
 
-<form id="register-form">
+            <div class="login-features">
+                <div class="login-feature">
+                    <i class="fas fa-user-check"></i>
+                    <span>Compte sécurisé</span>
+                </div>
 
-<div class="input-group">
-<label>Nom complet</label>
-<input type="text" id="fullname" required>
-</div>
+                <div class="login-feature">
+                    <i class="fas fa-car"></i>
+                    <span>Réservation rapide</span>
+                </div>
 
-<div class="input-group">
-<label>Email</label>
-<input type="email" id="email" required>
-</div>
+                <div class="login-feature">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Suivi des réservations</span>
+                </div>
+            </div>
+        </div>
 
-<div class="input-group">
-<label>Mot de passe</label>
-<input type="password" id="password" required>
-</div>
+        <div class="login-right">
 
-<button>
-Créer un compte
-</button>
+            <h2>Créer un compte</h2>
 
-</form>
+            <form class="login-form" id="register-form">
 
-</div>
+                <div class="input-group">
+                    <label>Nom complet</label>
+                    <input type="text" id="fullname" placeholder="Votre nom complet" required>
+                </div>
 
-</div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="email" placeholder="votre@email.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Mot de passe</label>
+                    <input type="password" id="password" placeholder="Votre mot de passe" required>
+                </div>
+
+                <button type="submit">
+                    Créer mon compte
+                </button>
+
+            </form>
+
+            <div class="login-footer">
+                <p>
+                    Déjà inscrit ?
+                    <a href="login.html">Se connecter</a>
+                </p>
+            </div>
+
+        </div>
+
+    </div>
 
 </section>
 
 <script>
-
-if(localStorage.getItem("token")){
+if (localStorage.getItem("token")) {
     window.location.href = "dashboard.html";
 }
 
-document
-.getElementById("register-form")
-.addEventListener(
-"submit",
-async(e)=>{
+document.getElementById("register-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-e.preventDefault();
+    const fullname = document.getElementById("fullname").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-const fullname =
-document.getElementById(
-"fullname"
-).value;
+    if (!fullname || !email || !password) {
+        alert("Veuillez remplir tous les champs.");
+        return;
+    }
 
-const email =
-document.getElementById(
-"email"
-).value;
+    try {
+        const response = await fetch("/api/auth/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                fullname,
+                email,
+                password
+            })
+        });
 
-const password =
-document.getElementById(
-"password"
-).value;
+        const data = await response.json();
 
-const response =
-await fetch(
-"/api/auth/register",
-{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-fullname,
-email,
-password
-})
-}
-);
+        if (response.ok) {
+            alert("Compte créé avec succès.");
+            window.location.href = "login.html";
+        } else {
+            alert(data.message || "Erreur lors de l'inscription.");
+        }
 
-const data =
-await response.json();
-
-if(response.ok){
-
-alert("Compte créé");
-
-window.location.href =
-"login.html";
-
-}else{
-
-alert(data.message);
-
-}
-
+    } catch (err) {
+        console.error(err);
+        alert("Erreur serveur lors de l'inscription.");
+    }
 });
-
 </script>
 
 </body>
